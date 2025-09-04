@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var alertIsVisible: Bool = false
-    @State var sliderValue: Double = 50.0
-    @State var target: Int = Int.random(in: 1...100)
+    @State var alertIsVisible = false
+    @State var sliderValue = 50.0
+    @State var target = Int.random(in: 1...100)
+    @State var score = 0
     //@State var whosThereVisible: Bool = false
 
     var body: some View {
@@ -20,7 +21,7 @@ struct ContentView: View {
                 //target row
                 HStack {
                     Text("Put the bullseye as close as you can to:")
-                    Text("\(self.target)")
+                    Text("\(target)")
                         //.fontWeight(.semibold)
                         //.foregroundColor(Color.green)
                 }
@@ -29,14 +30,16 @@ struct ContentView: View {
              //Slider row
                 HStack{
                     Text("1")
-                    Slider(value:self.$sliderValue, in: 1...100)
+                    Slider(value:$sliderValue, in: 1...100)
                     Text("100")
                 }
                 
                 //Button row
                 Button(action: {
                     print("Button pressed!")
-                    self.alertIsVisible = true
+                    alertIsVisible = true
+                    self.score = self.score + self.pointsForCurrentRound()
+                    self.target = Int.random(in: 1...100)
                 }) {
                     Text("Hit Me!")
                 }
@@ -44,12 +47,14 @@ struct ContentView: View {
             }
             
             .alert(isPresented: $alertIsVisible) { () -> Alert in
-                var roundedValue: Int = Int(self.sliderValue.rounded())
+                //let roundedValue = Int(sliderValue.rounded())
                 return Alert(title: Text("Hello there!"),
-                             message: Text("The slider's value is \(roundedValue).\n" +
-                                           "You scored \(self.pointsForCurrentRound()) pints this round"
+                             message: Text("The slider's value is \(sliderValueRounded()).\n" +
+                                           "You scored \(pointsForCurrentRound()) pints this round"
                                           ),
-                             dismissButton: .default(Text("Awesome!")))
+                             dismissButton: .default(Text("Awesome!")){
+                    
+                })
             }
             Spacer()
             
@@ -60,7 +65,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 Text("Score")
-                Text("999999")
+                Text("\(score)")
                 Spacer()
                 Text("Round")
                 Text("999")
@@ -84,18 +89,12 @@ struct ContentView: View {
         }*/
     }
     
+    func sliderValueRounded()-> Int{
+        return Int(sliderValue.rounded())
+    }
+    
     func pointsForCurrentRound()-> Int{
-        var difference: Int
-        var roundedValue: Int = Int(self.sliderValue.rounded())
-        if roundedValue > self.target{
-            difference = roundedValue - self.target
-        }else if self.target > roundedValue{
-            difference = self.target - roundedValue
-        }else{
-            difference = 0
-        }
-        var awardedPints: Int = 100 - difference
-        return awardedPints
+        return 100 - abs(target - sliderValueRounded())
     }
 }
 
