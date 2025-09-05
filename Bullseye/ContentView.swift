@@ -14,6 +14,43 @@ struct ContentView: View {
     @State var score = 0
     @State var round = 1
     @State var currentRoundPoints = 0
+    @State var currentRoundTarget = 0
+    let midnightBlue = Color(red: 0.0/255.0, green: 51/255.0, blue: 102/255.0)
+    struct LabelStyle: ViewModifier{
+        func body(content:Content)-> some View{
+            return content
+                .foregroundColor(Color.white)
+                .font(Font.custom("Arial Rounded MT Bold",size:30))
+        }
+    }
+    struct ValueStyle: ViewModifier{
+        func body(content:Content)-> some View{
+            return content
+                .foregroundColor(Color.yellow)
+                .font(Font.custom("Arial Rounded MT Bold",size:30))
+        }
+    }
+    struct ShadowStyle: ViewModifier {
+        func body(content: Content) -> some View {
+            return content
+                .shadow(color:Color.black, radius:5,x:2,y:2)
+        }
+    }
+    struct ButtonLargeTextStyle: ViewModifier {
+            func body(content: Content) -> some View {
+                return content
+                    .foregroundColor(Color.black)
+                    .font(Font.custom("Arial Rounded MT Bold", size: 18))
+            }
+        }
+        
+        struct ButtonSmallTextStyle: ViewModifier {
+            func body(content: Content) -> some View {
+                return content
+                    .foregroundColor(Color.black)
+                    .font(Font.custom("Arial Rounded MT Bold", size: 12))
+            }
+        }
     //@State var whosThereVisible: Bool = false
 
     var body: some View {
@@ -22,8 +59,8 @@ struct ContentView: View {
                 Spacer()
                 //target row
                 HStack {
-                    Text("Put the bullseye as close as you can to:")
-                    Text("\(target)")
+                    Text("Put the bullseye as close as you can to:").modifier(LabelStyle())
+                    Text("\(target)").modifier(ValueStyle())
                         //.fontWeight(.semibold)
                         //.foregroundColor(Color.green)
                 }
@@ -31,15 +68,17 @@ struct ContentView: View {
                 
              //Slider row
                 HStack{
-                    Text("1")
+                    Text("1").modifier(LabelStyle())
                     Slider(value:$sliderValue, in: 1...100)
-                    Text("100")
+                    Text("100").modifier(LabelStyle())
                 }
-                
+                Spacer()
                 //Button row
                 Button(action: {
                     print("Button pressed!")
-                    // 先计算当前轮分数
+                    // 先保存当前轮的目标值
+                    self.currentRoundTarget = self.target
+                    // 然后计算当前轮分数
                     self.currentRoundPoints = self.pointsForCurrentRound()
                     self.score = self.score + self.currentRoundPoints
                     // 然后显示alert
@@ -48,8 +87,9 @@ struct ContentView: View {
                     self.target = Int.random(in: 1...100)
                     self.round = self.round + 1
                 }) {
-                    Text("Hit Me!")
+                    Text("Hit Me!").modifier(ButtonLargeTextStyle())
                 }
+                .background(Image("Button")).modifier(ShadowStyle())
                 Spacer()
             }
             
@@ -67,23 +107,38 @@ struct ContentView: View {
             
             //Score Row
             HStack{
-                Button(action:{}) {
-                    Text("Start Over")
+                Button(action:{
+                    self.startNewGame()
+                }) {
+                    HStack{
+                        Image("StartOverIcon")
+                    }
+                    Text("Start Over").modifier(ButtonSmallTextStyle())
                 }
+                .background(Image("Button")).modifier(ShadowStyle())
+                .accentColor(midnightBlue)
                 Spacer()
-                Text("Score")
-                Text("\(score)")
+                Text("Score").modifier(LabelStyle())
+                Text("\(score)").modifier(ValueStyle())
                 Spacer()
-                Text("Round")
-                Text("\(round)")
+                Text("Round").modifier(LabelStyle())
+                Text("\(round)").modifier(ValueStyle())
                 Spacer()
                 Button(action:{}) {
-                    Text("Info")
-                }
+                    HStack{
+                        Image("InfoIcon")
+                    }
+                    Text("Info").modifier(ButtonSmallTextStyle())
+                }.background(Image("Button")).modifier(ShadowStyle())
+                
             }
             .padding(.bottom,20)
         }
-        
+        .background(Image("Background"),alignment: .center)
+        .accentColor(midnightBlue)
+        .onAppear {
+            currentRoundTarget = target
+        }
         /*Button(action:{
             self.whosThereVisible = true
         }) {
@@ -101,7 +156,7 @@ struct ContentView: View {
     }
     
     func amountOff() -> Int{
-        abs(target - sliderValueRounded())
+        abs(currentRoundTarget - sliderValueRounded())
     }
     
     func pointsForCurrentRound()-> Int{
@@ -118,19 +173,29 @@ struct ContentView: View {
         return maximumScore - difference + bonus
     }
     func alertTitle() -> String {
-        let difference = abs(target - sliderValueRounded())
+        let difference = abs(currentRoundTarget - sliderValueRounded())
+        print("Debug: currentRoundTarget = \(currentRoundTarget), sliderValue = \(sliderValue), sliderValueRounded = \(sliderValueRounded()), difference = \(difference)")
         let title: String
         if difference == 0{
             title = "Perfect"
         }else if difference <= 5{
             title = "You almost had it!"
         }else if difference <= 10{
-            title = "Not bac."
+            title = "Not bad."
         }else {
             title = "Are you even trying?"
         }
         return title
     }
+    
+    func startNewGame(){
+        score = 0
+        round = 1
+        sliderValue = 50.0
+        target = Int.random(in:1...100)
+        currentRoundTarget = target
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
