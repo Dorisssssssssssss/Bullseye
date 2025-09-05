@@ -54,7 +54,8 @@ struct ContentView: View {
     //@State var whosThereVisible: Bool = false
 
     var body: some View {
-        VStack {
+        NavigationView {
+            VStack {
             VStack {
                 Spacer()
                 //target row
@@ -124,7 +125,7 @@ struct ContentView: View {
                 Text("Round").modifier(LabelStyle())
                 Text("\(round)").modifier(ValueStyle())
                 Spacer()
-                Button(action:{}) {
+                NavigationLink(destination: AboutView()){
                     HStack{
                         Image("InfoIcon")
                     }
@@ -136,8 +137,13 @@ struct ContentView: View {
         }
         .background(Image("Background"),alignment: .center)
         .accentColor(midnightBlue)
+        .navigationTitle("Bullseye")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbarBackground(Color.white.opacity(0.5), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .onAppear {
             currentRoundTarget = target
+        }
         }
         /*Button(action:{
             self.whosThereVisible = true
@@ -195,7 +201,7 @@ struct ContentView: View {
         target = Int.random(in:1...100)
         currentRoundTarget = target
     }
-    
+        
 }
 
 struct ContentView_Previews: PreviewProvider {

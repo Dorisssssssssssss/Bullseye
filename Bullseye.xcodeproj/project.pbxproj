@@ -10,9 +10,22 @@
 		DC8664FB2E694F9200417458 /* Bullseye.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bullseye.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DC86651C2E6AB54F00417458 /* Exceptions for "Bullseye" folder in "Bullseye" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DC8664FA2E694F9200417458 /* Bullseye */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DC8664FD2E694F9200417458 /* Bullseye */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DC86651C2E6AB54F00417458 /* Exceptions for "Bullseye" folder in "Bullseye" target */,
+			);
 			path = Bullseye;
 			sourceTree = "<group>";
 		};
@@ -256,7 +269,8 @@
 				DEVELOPMENT_TEAM = 4FV7XV8358;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = Bullseye/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bull's eye";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -284,7 +298,8 @@
 				DEVELOPMENT_TEAM = 4FV7XV8358;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = Bullseye/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bull's eye";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
