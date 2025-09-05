@@ -12,6 +12,8 @@ struct ContentView: View {
     @State var sliderValue = 50.0
     @State var target = Int.random(in: 1...100)
     @State var score = 0
+    @State var round = 1
+    @State var currentRoundPoints = 0
     //@State var whosThereVisible: Bool = false
 
     var body: some View {
@@ -37,9 +39,14 @@ struct ContentView: View {
                 //Button row
                 Button(action: {
                     print("Button pressed!")
+                    // 先计算当前轮分数
+                    self.currentRoundPoints = self.pointsForCurrentRound()
+                    self.score = self.score + self.currentRoundPoints
+                    // 然后显示alert
                     alertIsVisible = true
-                    self.score = self.score + self.pointsForCurrentRound()
+                    // 最后更新target和round
                     self.target = Int.random(in: 1...100)
+                    self.round = self.round + 1
                 }) {
                     Text("Hit Me!")
                 }
@@ -48,9 +55,9 @@ struct ContentView: View {
             
             .alert(isPresented: $alertIsVisible) { () -> Alert in
                 //let roundedValue = Int(sliderValue.rounded())
-                return Alert(title: Text("Hello there!"),
+                return Alert(title: Text(alertTitle()),
                              message: Text("The slider's value is \(sliderValueRounded()).\n" +
-                                           "You scored \(pointsForCurrentRound()) pints this round"
+                                           "You scored \(currentRoundPoints) points this round"
                                           ),
                              dismissButton: .default(Text("Awesome!")){
                     
@@ -68,7 +75,7 @@ struct ContentView: View {
                 Text("\(score)")
                 Spacer()
                 Text("Round")
-                Text("999")
+                Text("\(round)")
                 Spacer()
                 Button(action:{}) {
                     Text("Info")
@@ -93,8 +100,36 @@ struct ContentView: View {
         return Int(sliderValue.rounded())
     }
     
+    func amountOff() -> Int{
+        abs(target - sliderValueRounded())
+    }
+    
     func pointsForCurrentRound()-> Int{
-        return 100 - abs(target - sliderValueRounded())
+        let maximumScore = 100
+        let difference = amountOff()
+        let bonus: Int
+        if difference == 0{
+            bonus = 100
+        }else if difference == 1{
+            bonus = 50
+        }else{
+            bonus = 0
+        }
+        return maximumScore - difference + bonus
+    }
+    func alertTitle() -> String {
+        let difference = abs(target - sliderValueRounded())
+        let title: String
+        if difference == 0{
+            title = "Perfect"
+        }else if difference <= 5{
+            title = "You almost had it!"
+        }else if difference <= 10{
+            title = "Not bac."
+        }else {
+            title = "Are you even trying?"
+        }
+        return title
     }
 }
 
