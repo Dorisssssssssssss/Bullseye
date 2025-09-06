@@ -22,6 +22,7 @@ struct BullseyeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var authManager = FirebaseAuthManager()
+    @State private var showAuth = false  // 控制是否显示认证界面
     
     var body: some Scene {
         WindowGroup {
@@ -32,11 +33,17 @@ struct BullseyeApp: App {
                         .onAppear {
                             print("📱 ShowContentView - Already Login")
                         }
-                } else {
-                    AuthView()
+                } else if showAuth {
+                    AuthView(showAuth: $showAuth)
                         .environmentObject(authManager)
                         .onAppear {
-                            print("📱 ShowAuthView - Haven't Login")
+                            print("📱 ShowAuthView - Authentication")
+                        }
+                } else {
+                    WelcomeView(showAuth: $showAuth)
+                        .environmentObject(authManager)
+                        .onAppear {
+                            print("📱 ShowWelcomeView - Welcome Page")
                         }
                 }
             }

@@ -55,7 +55,7 @@ struct ContentView: View {
     //@State var whosThereVisible: Bool = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
             VStack {
                 Spacer()

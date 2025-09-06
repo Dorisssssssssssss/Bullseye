@@ -10,14 +10,15 @@ import FirebaseAuth
 
 struct AuthView: View {
     @StateObject private var authManager = FirebaseAuthManager()
-    @State private var isSignUpMode: Bool = false
+    @State private var isSignUpMode: Bool = true
     @State private var email: String = ""
     @State private var password: String = ""
+    @Binding var showAuth: Bool
     
     let midnightBlue = Color(red: 0.0/255.0, green: 51/255.0, blue: 102/255.0)
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Image("Background")
                     .resizable()
@@ -126,11 +127,20 @@ struct AuthView: View {
                     
                     Spacer()
                 }
+        }
+        .navigationTitle(isSignUpMode ? "Sign Up" : "Sign In")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.white.opacity(0.5), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Back") {
+                    showAuth = false  // 返回到欢迎页面
+                }
+                .foregroundColor(midnightBlue)
+                .font(.headline)
             }
-            .navigationTitle(isSignUpMode ? "Sign Up" : "Sign In")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.white.opacity(0.5), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
+        }
         }
         .environmentObject(authManager)
         .onAppear {
@@ -198,9 +208,9 @@ struct ShadowStyle: ViewModifier {
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthView().environmentObject(FirebaseAuthManager())
-            .previewDevice("iPhone 14 Pro").environmentObject(FirebaseAuthManager())
+        AuthView(showAuth: .constant(true))
+            .environmentObject(FirebaseAuthManager())
+            .previewDevice("iPhone 14 Pro")
             .previewInterfaceOrientation(.landscapeLeft)
-    
     }
 }
