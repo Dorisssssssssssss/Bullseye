@@ -135,7 +135,7 @@ struct AuthView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Back") {
-                    showAuth = false  // 返回到欢迎页面
+                    showAuth = false  // back to welcome page
                 }
                 .foregroundColor(midnightBlue)
                 .font(.headline)
