@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var authManager: FirebaseAuthManager
     @State var alertIsVisible = false
     @State var sliderValue = 50.0
     @State var target = Int.random(in: 1...100)
@@ -77,14 +78,10 @@ struct ContentView: View {
                 //Button row
                 Button(action: {
                     print("Button pressed!")
-                    // 先保存当前轮的目标值
                     self.currentRoundTarget = self.target
-                    // 然后计算当前轮分数
                     self.currentRoundPoints = self.pointsForCurrentRound()
                     self.score = self.score + self.currentRoundPoints
-                    // 然后显示alert
                     alertIsVisible = true
-                    // 最后更新target和round
                     self.target = Int.random(in: 1...100)
                     self.round = self.round + 1
                 }) {
@@ -141,6 +138,27 @@ struct ContentView: View {
         .navigationBarTitleDisplayMode(.large)
         .toolbarBackground(Color.white.opacity(0.5), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    if let user = authManager.currentUser {
+                        Text("Welcome，\(user.email ?? "user")")
+                            .font(.headline)
+                        Divider()
+                        Text("UserID：\(user.uid)")
+                            .font(.caption)
+                        Divider()
+                    }
+                    Button("Log Out") {
+                        authManager.signOut()
+                    }
+                } label: {
+                    Image(systemName: "person.circle")
+                        .foregroundColor(midnightBlue)
+                        .font(.title2)
+                }
+            }
+        }
         .onAppear {
             currentRoundTarget = target
         }
@@ -207,7 +225,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .previewDevice("iPhone 14 Pro")
+            .previewDevice("iPhone 14 Pro").environmentObject(FirebaseAuthManager())
             .previewInterfaceOrientation(.landscapeLeft)
     }
 }

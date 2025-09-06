@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDg2LI1fq-69ExyqHVyy88wn-paWDLQ6_M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>812973854416</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Bullseye-game.Bullseye</string>
+	<key>PROJECT_ID</key>
+	<string>bullseye-15e5b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bullseye-15e5b.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:812973854416:ios:39fbd0e61c7f7a6a0818d5</string>
+</dict>
+</plist>
